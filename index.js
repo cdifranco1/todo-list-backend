@@ -1,10 +1,15 @@
 // const server = require('./server')
 const express = require('express')
-const server = express()
+const cookieParser = require('cookie-parser')
+const helmet = require('helmet')
 
+const server = express()
 const apiRouter = require('./api')
 
+
 server.use(express.json())
+server.use(cookieParser())
+server.use(helmet())
 
 const port = process.env.PORT || 8000
 

@@ -1,14 +1,11 @@
 
 exports.seed = function(knex) {
-  return knex('tasks').del()
+  return knex.raw('TRUNCATE TABLE users RESTART IDENTITY CASCADE')
     .then(() => {
-      return knex('users').del()
-        .then(() => {
-            return knex('users').insert([
-              {id: 1, username: 'charlie', password: "pass"},
-              {id: 2, username: 'charlie2', password: "pass"},
-              {id: 3, username: 'charlie3', password: "pass"}
-            ])
-        })
+        return knex('users').insert([
+          {username: 'charlie', password: "pass"},
+          {username: 'charlie2', password: "pass"},
+          {username: 'charlie3', password: "pass"}
+        ])
     })
 };

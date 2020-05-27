@@ -1,6 +1,8 @@
 const router = require('express').Router()
 const Tasks = require('./task-model')
+const { validation, schemas, authorization } = require('../middleware')
 
+router.use('/', authorization)
 
 router.get('/', async (req, res) => {
 
@@ -16,7 +18,7 @@ router.get('/', async (req, res) => {
 
 
 
-router.post('/', async (req, res) => {
+router.post('/', validation(schemas.task), async (req, res) => {
   console.log(req.body)
 
   try {
@@ -31,7 +33,7 @@ router.post('/', async (req, res) => {
 
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', validation(schemas.task), async (req, res) => {
   const { id } = req.params
 
   try {
