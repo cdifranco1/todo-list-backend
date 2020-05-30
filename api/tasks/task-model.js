@@ -5,7 +5,8 @@ module.exports = {
   findBy,
   getAll,
   updateTask,
-  deleteTask
+  deleteTask,
+  batchDeleteCompleted
 }
 
 function findBy(filter, value){
@@ -21,19 +22,29 @@ function addTask(task){
   return db("tasks")
           .insert(task, ['id'])
           .then(([{ id }]) => {
-            return findBy('id', id)
+            return findBy('id', id).first()
     })
 }
 
 function updateTask(id, task){
   return db("tasks")
           .where('id', id)
-          .update(task, ['id', 'task', 'dueDate'])
+          .update(task, ['id'])
+          .then(([{ id }]) => {
+            return findBy('id', id).first()
+          })
 }
 
 function deleteTask(id){
   return db("tasks")
           .where('id', id)
+          .del()
+}
+
+function batchDeleteCompleted(userId){
+  return db("tasks")
+          .where('userId', userId)
+          .andWhere('completed', true)
           .del()
 }
 
