@@ -6,10 +6,17 @@ const cors = require('cors')
 const server = express()
 const apiRouter = require('./api')
 
+const whitelist = [ "http://localhost:3000", "https://todo-list-frontend.vercel.app/"]
+
 server.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
-  }))
+  origin: (origin, callback) => {
+    if (whitelist.indexOf(origin) !== -1){
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  },
+}))
 server.use(express.json())
 server.use(cookieParser())
 server.use(helmet())
