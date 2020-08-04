@@ -16,6 +16,7 @@ server.use(cors({
       callback(new Error('Not allowed by CORS'))
     }
   },
+  credentials: true
 }))
 server.use(express.json())
 server.use(cookieParser())
