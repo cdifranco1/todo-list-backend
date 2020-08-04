@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const router = require('express').Router()
 const User = require('./user-model')
-const { validation, schemas } = require('../middleware')
+const { validation, schemas, authorization } = require('../middleware')
 
 
 // Probably won't need this route
@@ -50,12 +50,14 @@ router.post('/login', validation(schemas.user), async (req, res) => {
 
   try {
     const user = await User.findBy('username', username).first()
-    console.log(user)
-
+    
     if (!user) return res.status(401).json(authError)
 
     const passHash = user.password
     const validPass = bcrypt.compareSync(password, passHash)
+
+    if (!validPass) return res.status(401).json(authError)
+
 
     if (validPass){
       const payload = {

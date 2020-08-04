@@ -49,15 +49,10 @@ router.put('/:id', validation(schemas.task), async (req, res) => {
 
 //need to complete this
 router.delete('/batch/:userId', async (req, res) => {
-  console.log('running')
   const { userId } = req.params
 
   try {
     const deleted = await Tasks.batchDeleteCompleted(userId)
-    
-    // const count = await Tasks.deleteTask(id)
-
-    // if (!count) return res.status(403).json({ message: "Resource with specified ID does not exist."})
 
     res.status(200).json(deleted)
 
