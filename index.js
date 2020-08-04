@@ -6,7 +6,7 @@ const cors = require('cors')
 const server = express()
 const apiRouter = require('./api')
 
-const whitelist = [ "http://localhost:3000", "https://todo-list-frontend.vercel.app/"]
+const whitelist = [ "http://localhost:3000", "https://todo-list-frontend.vercel.app"]
 
 server.use(cors({
   origin: (origin, callback) => {
