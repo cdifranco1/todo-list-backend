@@ -2,7 +2,7 @@ const router = require('express').Router()
 const Tasks = require('./task-model')
 const { validation, schemas, authorization } = require('../middleware')
 
-// router.use('/', authorization)
+router.use('/', authorization)
 
 router.get('/', async (req, res) => {
 

@@ -44,7 +44,6 @@ router.post('/register', validation(schemas.user), async (req, res) => {
 
 //login
 router.post('/login', validation(schemas.user), async (req, res) => {
-  console.log("running")
   const authError = "Invalid username or password."
   const { username, password } = req.body
 
@@ -70,9 +69,8 @@ router.post('/login', validation(schemas.user), async (req, res) => {
       const token = jwt.sign(payload, secretKey, { expiresIn: "2 days"} )
       
       const cookieOptions = { secure: true, sameSite: "none" }
-      res.cookie('token', token, cookieOptions)
       
-      return res.status(200).json(`Welcome ${username}`)
+      return res.status(200).cookie('token', token, cookieOptions).json(`Welcome ${username}`)
     } 
 
   } catch(err) {
