@@ -68,8 +68,9 @@ router.post('/login', validation(schemas.user), async (req, res) => {
       const secretKey = process.env.JWT_SECRET || "secret key"
 
       const token = jwt.sign(payload, secretKey, { expiresIn: "2 days"} )
-
-      res.cookie('token', token)
+      
+      const cookieOptions = { secure: true, sameSite: "none" }
+      res.cookie('token', token, cookieOptions)
       
       return res.status(200).json(`Welcome ${username}`)
     } 
