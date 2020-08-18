@@ -8,7 +8,7 @@ const schemas = {
   task: Joi.object({
     id: Joi.number().integer(),
     task: Joi.string().required(),
-    userId: Joi.number().integer().required(),
+    userId: Joi.number().integer().allow(""),
     completed: Joi.boolean(),
     dueDate: Joi.string().allow("", null),
     details: Joi.string().allow("", null)

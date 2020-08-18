@@ -5,9 +5,10 @@ const { validation, schemas, authorization } = require('../middleware')
 router.use('/', authorization)
 
 router.get('/', async (req, res) => {
+  const userId = req.decodedToken.id
 
   try {
-    const tasks = await Tasks.getAll()
+    const tasks = await Tasks.getAllByID(userId)
 
     res.status(200).json(tasks)
 
@@ -19,10 +20,11 @@ router.get('/', async (req, res) => {
 
 
 router.post('/',  validation(schemas.task), async (req, res) => {
-  console.log(req.body)
+  const userId = req.decodedToken.id
+  const task = {...req.body, userId}
 
   try {
-    const newTask = await Tasks.addTask(req.body)
+    const newTask = await Tasks.addTask(task)
 
     res.status(201).json(newTask)
 
@@ -48,8 +50,8 @@ router.put('/:id', validation(schemas.task), async (req, res) => {
 })
 
 //need to complete this
-router.delete('/batch/:userId', async (req, res) => {
-  const { userId } = req.params
+router.delete('/batch', async (req, res) => {
+  const userId = req.decodedToken.id
 
   try {
     const deleted = await Tasks.batchDeleteCompleted(userId)
@@ -60,7 +62,6 @@ router.delete('/batch/:userId', async (req, res) => {
 
     res.status(500).json({ error: err.message })
   }
-
 })
 
 router.delete('/:id', async (req, res) => {

@@ -68,15 +68,25 @@ router.post('/login', validation(schemas.user), async (req, res) => {
 
       const token = jwt.sign(payload, secretKey, { expiresIn: "2 days"} )
       
-      const cookieOptions = { secure: true, sameSite: "none" }
+      // const cookieOptions = { secure: true, sameSite: "none" }
       
-      return res.status(200).cookie('token', token, cookieOptions).json(`Welcome ${username}`)
+      return res.status(200).json({ token })
     } 
 
   } catch(err) {
 
     res.status(500).json({ error: err.message })
   }
+})
+
+router.get('/auth', authorization, (req, res) => {
+    user = req.decodedToken
+
+    if (user) {
+      res.status(200).json(user)
+    } else {
+      res.status(401).json("User not authenticated")
+    }
 })
 
 

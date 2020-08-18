@@ -3,7 +3,7 @@ const db = require('../../data/dbConfig')
 module.exports = {
   addTask,
   findBy,
-  getAll,
+  getAllByID,
   updateTask,
   deleteTask,
   batchDeleteCompleted
@@ -14,11 +14,13 @@ function findBy(filter, value){
           .where(filter, value)
 }
 
-function getAll(){
+function getAllByID(userId){
   return db("tasks")
+          .where({ userId })
 }
 
 function addTask(task){
+  console.log(task)
   return db("tasks")
           .insert(task, ['id'])
           .then(([{ id }]) => {
@@ -42,6 +44,7 @@ function deleteTask(id){
 }
 
 function batchDeleteCompleted(userId){
+  console.log(userId)
   return db("tasks")
           .where('userId', userId)
           .andWhere('completed', true)
